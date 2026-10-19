@@ -6,6 +6,7 @@ export function emptyState() {
     version: 1,
     entries: {},
     plan: { startDate: "", checks: {}, notes: {} },
+    days: {},
   };
 }
 
@@ -30,6 +31,49 @@ function normalize(data) {
       checks: plan.checks && typeof plan.checks === "object" && !Array.isArray(plan.checks) ? plan.checks : {},
       notes: plan.notes && typeof plan.notes === "object" && !Array.isArray(plan.notes) ? plan.notes : {},
     },
+    days: normalizeDays(data?.days),
+  };
+}
+
+function normalizeDays(raw) {
+  const days = {};
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return days;
+  for (const [key, value] of Object.entries(raw)) {
+    const day = normalizeDay(value, key);
+    if (day) days[day.date] = day;
+  }
+  return days;
+}
+
+function normalizeDay(value, key) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  const date = /^\d{4}-\d{2}-\d{2}$/.test(value.date) ? value.date : /^\d{4}-\d{2}-\d{2}$/.test(key) ? key : "";
+  if (!date) return null;
+  const items = Array.isArray(value.items) ? value.items.map(normalizeDayItem).filter(Boolean) : [];
+  const reviewNote = typeof value.reviewNote === "string" ? value.reviewNote : "";
+  if (!items.length && !reviewNote.trim()) return null;
+  return {
+    date,
+    createdAt: typeof value.createdAt === "string" ? value.createdAt : "",
+    updatedAt: typeof value.updatedAt === "string" ? value.updatedAt : "",
+    reviewNote,
+    items,
+  };
+}
+
+function normalizeDayItem(item) {
+  if (!item || typeof item !== "object" || !item.id) return null;
+  const title = typeof item.title === "string" ? item.title.trim() : "";
+  if (!title) return null;
+  const status = item.status === "done" || item.status === "minimum" ? item.status : "open";
+  return {
+    id: String(item.id),
+    title,
+    time: typeof item.time === "string" ? item.time : "",
+    minimum: typeof item.minimum === "string" ? item.minimum.trim() : "",
+    status,
+    carriedFrom: typeof item.carriedFrom === "string" ? item.carriedFrom : "",
+    carriedTo: typeof item.carriedTo === "string" ? item.carriedTo : "",
   };
 }
 
@@ -85,6 +129,7 @@ export function exportPayload(state) {
     exportedAt: new Date().toISOString(),
     entries: state.entries,
     plan: state.plan,
+    days: state.days,
   };
 }
 

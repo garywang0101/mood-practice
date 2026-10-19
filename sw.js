@@ -1,5 +1,5 @@
 /* Relative paths so the site works at /mood-practice/ on GitHub Pages. */
-const CACHE = "mood-practice-v1";
+const CACHE = "mood-practice-v2";
 const ASSETS = [
   "./index.html",
   "./styles.css",
@@ -10,6 +10,7 @@ const ASSETS = [
   "./js/form.js",
   "./js/store.js",
   "./js/util.js",
+  "./js/days.js",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/apple-touch-icon.png",

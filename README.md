@@ -2,7 +2,7 @@
 
 一个给自己用的情绪练习小站，可以加到 iPhone 主屏幕上。没有网络时也能打开。
 
-练习包括：快要发火时的 STOP 和三分钟呼吸空间、每日情绪打卡、思维记录，以及八周练习勾选。表的内容来自 `worksheets.json`，打印版是 `emotion-worksheets.pdf`。
+练习包括：快要发火时的 STOP 和三分钟呼吸空间、每日情绪打卡、明日计划里的两三件小事、思维记录，以及八周练习勾选。表的内容来自 `worksheets.json`，打印版是 `emotion-worksheets.pdf`。
 
 ## 数据在哪里
 
