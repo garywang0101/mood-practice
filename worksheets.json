@@ -1,0 +1,1210 @@
+{
+  "schema_version": "1.0",
+  "title": "情绪练习表",
+  "language": "zh-CN",
+  "description": "根据四本自助书的读书笔记整理的精选练习表。仅供自助练习，不能代替医生和心理咨询师。不含任何有版权量表的原题。",
+  "field_types": {
+    "text": "单行文字",
+    "textarea": "多行文字，print_lines 为打印时预留行数",
+    "number": "数字，含 min/max，unit 为单位（可选）",
+    "single_choice": "单选，options",
+    "multi_choice": "多选，options；allow_other=true 时允许自填其他",
+    "date": "日期 YYYY-MM-DD",
+    "datetime": "日期和时间 YYYY-MM-DDTHH:MM",
+    "time": "时间 HH:MM"
+  },
+  "structure_notes": "每张表的 sections 为字段分组；repeatable=true 表示可重复添加多条记录（打印版按 print_rows 画行）。example 的键对应字段 name；可重复分组在 example 中用分组 id 为键、值为对象数组。steps / reference / weeks 是只读说明内容，不需要填写。",
+  "sources": [
+    "《伯恩斯新情绪疗法》（戴维·伯恩斯）",
+    "《抑郁症的正念认知疗法》第2版（西格尔、威廉斯、蒂斯代尔）",
+    "《焦虑症与恐惧症手册》第6版（艾德蒙·伯恩）",
+    "《抑郁症自救手册》（莫妮克·汤普森）"
+  ],
+  "worksheets": [
+    {
+      "id": "daily_checkin",
+      "title": "每日情绪与练习打卡",
+      "category": "每天",
+      "when_to_use": "每天睡前花 2 分钟。看的是一周里的变化趋势，不评判某一天。",
+      "how_to_fill": "给今天的心情、烦躁、焦虑各打一个 0–10 的分，勾出今天做过的练习，再写一件小事。这不是诊断量表，只是自己的记录。",
+      "sources": [
+        {
+          "book": "《伯恩斯新情绪疗法》（戴维·伯恩斯）",
+          "chapter": "第2章",
+          "note": "书中建议像称体重一样定期记录情绪变化；本表只是自评打分，不含书中量表原题"
+        },
+        {
+          "book": "《抑郁症的正念认知疗法》第2版（西格尔、威廉斯、蒂斯代尔）",
+          "chapter": "第7–17章",
+          "note": "每天短时间、有规律的练习"
+        },
+        {
+          "book": "《抑郁症自救手册》（莫妮克·汤普森）",
+          "chapter": "第10章",
+          "note": "复发信号，每周对照一次"
+        }
+      ],
+      "sections": [
+        {
+          "id": "day",
+          "title": "一周记录",
+          "repeatable": true,
+          "print_rows": 7,
+          "fields": [
+            {
+              "name": "date",
+              "label": "日期",
+              "type": "date"
+            },
+            {
+              "name": "mood",
+              "label": "心情（0 很低落 – 10 很好）",
+              "type": "number",
+              "min": 0,
+              "max": 10
+            },
+            {
+              "name": "irritability",
+              "label": "烦躁／易怒（0–10）",
+              "type": "number",
+              "min": 0,
+              "max": 10
+            },
+            {
+              "name": "anxiety",
+              "label": "焦虑（0–10）",
+              "type": "number",
+              "min": 0,
+              "max": 10
+            },
+            {
+              "name": "practices",
+              "label": "今天做了",
+              "type": "multi_choice",
+              "options": [
+                "呼吸空间/STOP",
+                "思维记录",
+                "愉快/掌控活动",
+                "运动",
+                "正念练习",
+                "说出需要"
+              ]
+            },
+            {
+              "name": "note",
+              "label": "今天的一件小事（好的或难的）",
+              "type": "text",
+              "hint": "比如：陪孩子搭了 10 分钟积木"
+            }
+          ]
+        },
+        {
+          "id": "week",
+          "title": "每周回顾（周末填）",
+          "repeatable": false,
+          "fields": [
+            {
+              "name": "warning_signs",
+              "label": "这周出现的预警信号",
+              "type": "multi_choice",
+              "options": [
+                "睡眠变差",
+                "更容易发火",
+                "对什么都没兴趣",
+                "想躲开家人",
+                "反复回想旧事",
+                "觉得没有希望"
+              ]
+            },
+            {
+              "name": "what_helped",
+              "label": "这周最有帮助的一件事",
+              "type": "textarea",
+              "print_lines": 1
+            },
+            {
+              "name": "next_week",
+              "label": "下周想多做一点的",
+              "type": "textarea",
+              "print_lines": 1
+            }
+          ]
+        }
+      ],
+      "safety_note": "如果出现伤害自己的念头，或者感到彻底无望，请尽快联系医生、心理咨询师或当地心理援助热线，不要等。"
+    },
+    {
+      "id": "thought_record",
+      "title": "思维记录表",
+      "category": "想法",
+      "when_to_use": "情绪突然变差、事后还在心里反复想的时候填。最好当天写。",
+      "how_to_fill": "先写客观发生了什么，再写情绪和强度、脑子里冒出的原话；对照 10 种认知扭曲勾选，然后列证据、写一个自己真信的平衡想法，最后重新给情绪打分。",
+      "sources": [
+        {
+          "book": "《伯恩斯新情绪疗法》（戴维·伯恩斯）",
+          "chapter": "第3、4章",
+          "note": "10 种认知扭曲；三栏法／不良想法日常记录"
+        },
+        {
+          "book": "《抑郁症自救手册》（莫妮克·汤普森）",
+          "chapter": "第3章及附录",
+          "note": "思维记录、检视刺激性想法（证据支持／反对）"
+        },
+        {
+          "book": "《抑郁症自救手册》（莫妮克·汤普森）",
+          "chapter": "第5章",
+          "note": "TANS 情绪调节策略"
+        }
+      ],
+      "sections": [
+        {
+          "id": "main",
+          "title": "记录",
+          "repeatable": false,
+          "fields": [
+            {
+              "name": "datetime",
+              "label": "日期和时间",
+              "type": "datetime"
+            },
+            {
+              "name": "situation",
+              "label": "情境：只写客观事实（谁、在哪、发生了什么）",
+              "type": "textarea",
+              "print_lines": 2
+            },
+            {
+              "name": "emotions",
+              "label": "情绪和强度",
+              "type": "textarea",
+              "hint": "例如：愤怒 80%，委屈 60%",
+              "print_lines": 1
+            },
+            {
+              "name": "emotion_before",
+              "label": "最强的那个情绪有多强",
+              "type": "number",
+              "min": 0,
+              "max": 100,
+              "unit": "%"
+            },
+            {
+              "name": "automatic_thoughts",
+              "label": "自动想法：当时脑子里冒出的原话",
+              "type": "textarea",
+              "print_lines": 2
+            },
+            {
+              "name": "distortions",
+              "label": "认知扭曲（可多选）",
+              "type": "multi_choice",
+              "options": [
+                "非黑即白",
+                "过度概括",
+                "心理过滤",
+                "否定正面",
+                "妄下结论（读心术／先知错误）",
+                "放大或缩小",
+                "情绪推理",
+                "“应该”句式",
+                "贴标签",
+                "个人化"
+              ]
+            },
+            {
+              "name": "evidence_for",
+              "label": "支持这个想法的证据",
+              "type": "textarea",
+              "print_lines": 1
+            },
+            {
+              "name": "evidence_against",
+              "label": "不支持的证据／例外",
+              "type": "textarea",
+              "print_lines": 2
+            },
+            {
+              "name": "balanced_thought",
+              "label": "更平衡的想法（如果好朋友遇到，我会对他说什么？）",
+              "type": "textarea",
+              "print_lines": 2
+            },
+            {
+              "name": "tans",
+              "label": "还用了哪种方法",
+              "type": "multi_choice",
+              "options": [
+                "T 认知重构：这个想法准确、有益吗？",
+                "A 接纳：给情绪留出位置",
+                "N 正常化：大多数人遇到也会这样",
+                "S 自我关怀：对朋友我会怎么说"
+              ]
+            },
+            {
+              "name": "emotion_after",
+              "label": "现在这个情绪有多强",
+              "type": "number",
+              "min": 0,
+              "max": 100,
+              "unit": "%"
+            },
+            {
+              "name": "outcome",
+              "label": "接下来我打算怎么做",
+              "type": "textarea",
+              "print_lines": 1
+            }
+          ]
+        }
+      ],
+      "reference": {
+        "title": "10 种认知扭曲速查（伯恩斯第3章）",
+        "items": [
+          "非黑即白：不完美就等于彻底失败",
+          "过度概括：一件坏事当成“永远都这样”",
+          "心理过滤：只盯着一个负面细节",
+          "否定正面：好的事“不算数”",
+          "妄下结论：读心术（认定别人在负面地看你）、先知错误（把坏的预测当事实）",
+          "放大或缩小：放大自己的错，缩小自己的好",
+          "情绪推理：“我感觉是这样，所以就是这样”",
+          "“应该”句式：用“应该／必须”要求自己或别人",
+          "贴标签：用一个负面标签概括一个人",
+          "个人化：把不是自己造成的事揽到自己身上"
+        ]
+      },
+      "example": {
+        "situation": "晚饭时家里长辈给孩子喂饭，你说让孩子自己吃，伴侣说“算了别争了”。",
+        "emotions": "愤怒 85%，委屈 70%",
+        "emotion_before": 85,
+        "automatic_thoughts": "“他／她永远不站在我这边。”“在这个家里我说话不算数。”",
+        "distortions": [
+          "过度概括",
+          "妄下结论（读心术／先知错误）",
+          "贴标签"
+        ],
+        "evidence_for": "这次确实没有支持我。",
+        "evidence_against": "上个月孩子看电视的事，伴侣主动去和长辈商量过。这次可能只是不想当着孩子吵。",
+        "balanced_thought": "这次伴侣选择先息事宁人，不代表永远。我可以晚上单独跟他／她商量喂饭的事。",
+        "tans": [
+          "T 认知重构：这个想法准确、有益吗？",
+          "S 自我关怀：对朋友我会怎么说"
+        ],
+        "emotion_after": 45,
+        "outcome": "孩子睡后约伴侣谈 15 分钟，用自我主张沟通准备表先写一下。"
+      }
+    },
+    {
+      "id": "anger_quick_card",
+      "title": "发脾气时的快速应对卡",
+      "category": "当下",
+      "when_to_use": "感到火往上冲的那一刻用。可以剪下来放在钱包里，或者存在手机里。",
+      "how_to_fill": "先做 STOP（几秒钟），时间允许就做三分钟呼吸空间，然后选一扇“门”。平时先填好下面的个人信号和“缓一下”的说法。",
+      "sources": [
+        {
+          "book": "《抑郁症自救手册》（莫妮克·汤普森）",
+          "chapter": "第5章",
+          "note": "策略 11：STOP"
+        },
+        {
+          "book": "《抑郁症的正念认知疗法》第2版（西格尔、威廉斯、蒂斯代尔）",
+          "chapter": "第10、13、18章",
+          "note": "三分钟呼吸空间（书第197–198、281–282、374–380页）"
+        },
+        {
+          "book": "《伯恩斯新情绪疗法》（戴维·伯恩斯）",
+          "chapter": "第7章",
+          "note": "检查怒气的两个问题、离开现场打断“重播”"
+        }
+      ],
+      "steps": [
+        {
+          "title": "STOP（几秒钟）",
+          "items": [
+            "S 停一下：先不说话、不动手。孩子在场先确认孩子安全",
+            "T 深呼吸：慢慢吸一口气，再慢慢呼出",
+            "O 观察：不加评判地看看现在是什么情况、身体有什么信号",
+            "P 选一种方式回应，不被冲动推着走"
+          ]
+        },
+        {
+          "title": "三分钟呼吸空间（沙漏形状）",
+          "items": [
+            "① 觉知（约1分钟）：有什么想法？有什么情绪（“这里有愤怒”）？身体哪里紧、哪里热？",
+            "② 聚焦（约1分钟）：把注意力收到腹部随呼吸的起伏，走神了就带回来",
+            "③ 扩展（约1分钟）：觉知扩展到整个身体；吸气时“进入”紧绷处，呼气时松开一点"
+          ]
+        },
+        {
+          "title": "选一扇门",
+          "items": [
+            "重新进入：带着新的状态回去，但不在气头上开战",
+            "身体之门：继续陪着身体感受，太强就回到呼吸或脚底",
+            "想法之门：把念头写下来，晚点再看哪些是事实",
+            "行动之门：做一件照顾自己的小事（喝杯热水、走 10 分钟）"
+          ]
+        },
+        {
+          "title": "问自己两个问题（伯恩斯第7章）",
+          "items": [
+            "对方是故意、没必要地伤害我吗？",
+            "我现在发火，对达到我的目标有用吗？"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "prep",
+          "title": "平时先填好",
+          "repeatable": false,
+          "fields": [
+            {
+              "name": "body_signals",
+              "label": "我的“快要失控”身体信号",
+              "type": "multi_choice",
+              "options": [
+                "心跳加快",
+                "咬紧牙",
+                "脸发红发热",
+                "胸口发紧",
+                "握拳",
+                "声音变大"
+              ]
+            },
+            {
+              "name": "other_signal",
+              "label": "其他信号",
+              "type": "text"
+            },
+            {
+              "name": "pause_phrase",
+              "label": "我“缓一下”时说的话",
+              "type": "text",
+              "hint": "例如：“我先缓三分钟，等会儿再说。”"
+            },
+            {
+              "name": "self_care_action",
+              "label": "行动之门：我能做的一件小事",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "id": "log",
+          "title": "用后小记（可选）",
+          "repeatable": true,
+          "print_rows": 3,
+          "fields": [
+            {
+              "name": "datetime",
+              "label": "时间",
+              "type": "datetime"
+            },
+            {
+              "name": "anger_before",
+              "label": "之前怒气",
+              "type": "number",
+              "min": 0,
+              "max": 100,
+              "unit": "%"
+            },
+            {
+              "name": "used",
+              "label": "用了",
+              "type": "multi_choice",
+              "options": [
+                "STOP",
+                "三分钟呼吸空间",
+                "两个问题"
+              ]
+            },
+            {
+              "name": "door",
+              "label": "选了哪扇门",
+              "type": "single_choice",
+              "options": [
+                "重新进入",
+                "身体之门",
+                "想法之门",
+                "行动之门"
+              ]
+            },
+            {
+              "name": "anger_after",
+              "label": "之后怒气",
+              "type": "number",
+              "min": 0,
+              "max": 100,
+              "unit": "%"
+            }
+          ]
+        }
+      ],
+      "example": {
+        "body_signals": [
+          "咬紧牙",
+          "胸口发紧"
+        ],
+        "pause_phrase": "“这事我们晚点再聊，我先去倒杯水。”",
+        "self_care_action": "到阳台站 3 分钟，喝杯温水"
+      }
+    },
+    {
+      "id": "conflict_review",
+      "title": "冲突后复盘表",
+      "category": "事后",
+      "when_to_use": "吵架、发火或憋着生闷气之后，等情绪降下来（通常是当晚或第二天）再填。",
+      "how_to_fill": "先把“生气”拆成更精确的情绪词，再看当时的冲动和实际反应，最后写下一句能说出口的需要。目的是下次做得不一样，不是给自己定罪。",
+      "sources": [
+        {
+          "book": "《抑郁症自救手册》（莫妮克·汤普森）",
+          "chapter": "第5章",
+          "note": "策略 9 标记情绪（表 5.1 词库节选）、策略 10 情绪如何影响生活、STOP 复盘问题"
+        },
+        {
+          "book": "《伯恩斯新情绪疗法》（戴维·伯恩斯）",
+          "chapter": "第7、8章",
+          "note": "准确地移情；为行为道歉，懊悔而不是内疚"
+        },
+        {
+          "book": "《焦虑症与恐惧症手册》第6版（艾德蒙·伯恩）",
+          "chapter": "第12、14章",
+          "note": "识别和表达情绪；基本需要"
+        }
+      ],
+      "sections": [
+        {
+          "id": "main",
+          "title": "复盘",
+          "repeatable": false,
+          "fields": [
+            {
+              "name": "situation",
+              "label": "发生了什么（人、事、地点、时间）",
+              "type": "textarea",
+              "print_lines": 2
+            },
+            {
+              "name": "core_emotions",
+              "label": "核心情绪",
+              "type": "multi_choice",
+              "options": [
+                "快乐",
+                "悲伤",
+                "爱",
+                "愤怒",
+                "惊讶",
+                "恐惧"
+              ]
+            },
+            {
+              "name": "precise_emotions",
+              "label": "更精确的词（可多选）",
+              "type": "multi_choice",
+              "options": [
+                "烦躁",
+                "不耐烦",
+                "愤恨",
+                "恼怒",
+                "委屈",
+                "被忽视",
+                "无力",
+                "孤独",
+                "疏离",
+                "内疚",
+                "羞愧",
+                "失望",
+                "挫败",
+                "空虚",
+                "焦虑",
+                "紧张",
+                "担心",
+                "受威胁",
+                "渴望",
+                "平静",
+                "欣慰"
+              ],
+              "allow_other": true
+            },
+            {
+              "name": "emotion_intensity",
+              "label": "最主要的情绪和强度",
+              "type": "text",
+              "hint": "例如：被忽视 80%"
+            },
+            {
+              "name": "urge",
+              "label": "冲动：当时想做什么",
+              "type": "textarea",
+              "print_lines": 1
+            },
+            {
+              "name": "actual_reaction",
+              "label": "实际反应：我做了什么、说了什么",
+              "type": "textarea",
+              "print_lines": 2
+            },
+            {
+              "name": "approach_avoid",
+              "label": "这是接近还是回避？",
+              "type": "single_choice",
+              "options": [
+                "接近（把事情摆到桌面上）",
+                "回避（冷处理、摔东西、不说）",
+                "攻击（吼、指责）"
+              ]
+            },
+            {
+              "name": "result",
+              "label": "结果怎样",
+              "type": "textarea",
+              "print_lines": 1
+            },
+            {
+              "name": "tans_used",
+              "label": "用上了哪种方法",
+              "type": "multi_choice",
+              "options": [
+                "T 认知重构：这个想法准确、有益吗？",
+                "A 接纳：给情绪留出位置",
+                "N 正常化：大多数人遇到也会这样",
+                "S 自我关怀：对朋友我会怎么说",
+                "都没有用上"
+              ]
+            },
+            {
+              "name": "other_view",
+              "label": "站在对方角度：他／她当时可能是怎么想的",
+              "type": "textarea",
+              "print_lines": 1
+            },
+            {
+              "name": "needs",
+              "label": "我真正需要的是",
+              "type": "multi_choice",
+              "options": [
+                "被倾听",
+                "被尊重",
+                "被支持",
+                "有人分担",
+                "休息",
+                "私人时间和空间",
+                "在育儿上有发言权",
+                "被认可",
+                "亲密和温暖",
+                "其他"
+              ]
+            },
+            {
+              "name": "need_sentence",
+              "label": "写成一句能说出口的话：“我希望……”",
+              "type": "textarea",
+              "print_lines": 2
+            },
+            {
+              "name": "repair",
+              "label": "需要修复的部分（为哪个行为道歉）",
+              "type": "textarea",
+              "print_lines": 1
+            }
+          ]
+        }
+      ],
+      "example": {
+        "situation": "周日下午，长辈说“你这么带孩子不行”，你当场顶了回去，之后一晚上不说话。",
+        "core_emotions": [
+          "愤怒",
+          "悲伤"
+        ],
+        "precise_emotions": [
+          "委屈",
+          "被忽视",
+          "无力"
+        ],
+        "emotion_intensity": "被忽视 80%",
+        "urge": "想说“那你们自己带好了”",
+        "actual_reaction": "大声顶了一句，然后回房间关门。",
+        "approach_avoid": "攻击（吼、指责）",
+        "result": "气氛僵了一晚上，自己也睡不好。",
+        "tans_used": [
+          "N 正常化：大多数人遇到也会这样"
+        ],
+        "other_view": "长辈可能是担心孩子，想帮忙，只是说法很冲。",
+        "needs": [
+          "被尊重",
+          "在育儿上有发言权"
+        ],
+        "need_sentence": "“我希望孩子的事我们先私下商量，不当着孩子争。”",
+        "repair": "为大声顶嘴这个行为道歉，但不放弃我的意见。"
+      }
+    },
+    {
+      "id": "activity_pleasure",
+      "title": "活动计划与快乐预测表",
+      "category": "行动",
+      "when_to_use": "没动力、对什么都提不起兴趣的时候用。书里说抑郁时要先做，感觉才会跟上。",
+      "how_to_fill": "早上用不超过 5 分钟写计划，至少安排一件纯粹让自己愉快的事；晚上记实际做了什么，标 M（掌控感）或 P（愉快感）并打 0–5 分。快乐预测部分：做之前预测满意度，做完再记实际满意度，比一比。",
+      "sources": [
+        {
+          "book": "《伯恩斯新情绪疗法》（戴维·伯恩斯）",
+          "chapter": "第5、12章",
+          "note": "每日活动计划、M/P 评分、快乐预测表"
+        },
+        {
+          "book": "《抑郁症的正念认知疗法》第2版（西格尔、威廉斯、蒂斯代尔）",
+          "chapter": "第16章",
+          "note": "愉快（P）和掌控感（M）活动，书第332、338页"
+        },
+        {
+          "book": "《抑郁症自救手册》（莫妮克·汤普森）",
+          "chapter": "第8章",
+          "note": "策略 19 愉悦活动计划、任务分解"
+        }
+      ],
+      "sections": [
+        {
+          "id": "schedule",
+          "title": "今日活动计划",
+          "repeatable": true,
+          "print_rows": 8,
+          "fields": [
+            {
+              "name": "time_slot",
+              "label": "时间段",
+              "type": "text",
+              "hint": "例如 19–20 点"
+            },
+            {
+              "name": "plan",
+              "label": "计划（早上写）",
+              "type": "text"
+            },
+            {
+              "name": "actual",
+              "label": "实际做了什么（晚上写）",
+              "type": "text"
+            },
+            {
+              "name": "mp",
+              "label": "M 或 P",
+              "type": "single_choice",
+              "options": [
+                "M 掌控感",
+                "P 愉快感",
+                "都有",
+                "都没有"
+              ]
+            },
+            {
+              "name": "score",
+              "label": "分数",
+              "type": "number",
+              "min": 0,
+              "max": 5
+            }
+          ]
+        },
+        {
+          "id": "prediction",
+          "title": "快乐预测",
+          "repeatable": true,
+          "print_rows": 5,
+          "fields": [
+            {
+              "name": "date",
+              "label": "日期",
+              "type": "date"
+            },
+            {
+              "name": "activity",
+              "label": "活动（太大就拆成 15 分钟以内的小步）",
+              "type": "text"
+            },
+            {
+              "name": "with_whom",
+              "label": "和谁（自己也算）",
+              "type": "text"
+            },
+            {
+              "name": "predicted",
+              "label": "预测满意度（做之前）",
+              "type": "number",
+              "min": 0,
+              "max": 100,
+              "unit": "%"
+            },
+            {
+              "name": "actual",
+              "label": "实际满意度（做之后）",
+              "type": "number",
+              "min": 0,
+              "max": 100,
+              "unit": "%"
+            }
+          ]
+        }
+      ],
+      "example": {
+        "prediction": [
+          {
+            "activity": "孩子睡后一个人快走 20 分钟",
+            "with_whom": "自己",
+            "predicted": 20,
+            "actual": 55
+          }
+        ]
+      }
+    },
+    {
+      "id": "nourish_deplete",
+      "title": "滋养／消耗清单",
+      "category": "行动",
+      "when_to_use": "觉得累、被掏空，或者发现自己的爱好一件件被砍掉的时候用（书里叫“疲惫漏斗”）。",
+      "how_to_fill": "列出平常一天做的事，每件标滋养（N）还是消耗（D）。再想想：消耗的能不能少一点、换个做法，滋养的能不能加回来一件。",
+      "sources": [
+        {
+          "book": "《抑郁症的正念认知疗法》第2版（西格尔、威廉斯、蒂斯代尔）",
+          "chapter": "第16章",
+          "note": "滋养／消耗活动、疲惫漏斗，书第334–335、347页"
+        },
+        {
+          "book": "《抑郁症自救手册》（莫妮克·汤普森）",
+          "chapter": "第8章",
+          "note": "减少让我更糟的活动"
+        },
+        {
+          "book": "《焦虑症与恐惧症手册》第6版（艾德蒙·伯恩）",
+          "chapter": "第4章",
+          "note": "休假和时间管理"
+        }
+      ],
+      "sections": [
+        {
+          "id": "day_list",
+          "title": "我平常的一天",
+          "repeatable": true,
+          "print_rows": 10,
+          "fields": [
+            {
+              "name": "activity",
+              "label": "活动",
+              "type": "text"
+            },
+            {
+              "name": "type",
+              "label": "滋养还是消耗",
+              "type": "single_choice",
+              "options": [
+                "N 滋养",
+                "D 消耗",
+                "说不清"
+              ]
+            },
+            {
+              "name": "adjust",
+              "label": "可以怎么调整",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "id": "plan",
+          "title": "调整计划",
+          "repeatable": false,
+          "fields": [
+            {
+              "name": "add_back",
+              "label": "想加回来的滋养活动（写具体时间）",
+              "type": "textarea",
+              "print_lines": 2
+            },
+            {
+              "name": "reduce",
+              "label": "想减少或换做法的消耗活动",
+              "type": "textarea",
+              "print_lines": 2
+            },
+            {
+              "name": "help_needed",
+              "label": "需要谁帮什么忙",
+              "type": "textarea",
+              "hint": "例如：请家人带孩子 20 分钟",
+              "print_lines": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "assertive_prep",
+      "title": "自我主张沟通准备表",
+      "category": "沟通",
+      "when_to_use": "有一件憋了很久、想和伴侣或长辈好好谈的事，在谈之前填。先写下来，可以自己练或和咨询师角色扮演，再去说。",
+      "how_to_fill": "按六步写：我的权利、约时间、这件事对我的影响、我的感受、一个具体请求、合作带来的好结果。请求一次只提一个，1–2 句话，用“我希望……”，不道歉，是请求不是命令。",
+      "sources": [
+        {
+          "book": "《焦虑症与恐惧症手册》第6版（艾德蒙·伯恩）",
+          "chapter": "第13章",
+          "note": "坚持自我：六步法（改编自鲍尔）、当场坚持自我、说“不”的步骤"
+        },
+        {
+          "book": "《伯恩斯新情绪疗法》（戴维·伯恩斯）",
+          "chapter": "第6、7章",
+          "note": "语言柔道、奖励代替惩罚"
+        }
+      ],
+      "sections": [
+        {
+          "id": "main",
+          "title": "准备",
+          "repeatable": false,
+          "fields": [
+            {
+              "name": "audience",
+              "label": "这次要对谁说",
+              "type": "single_choice",
+              "options": [
+                "伴侣",
+                "长辈",
+                "其他家人",
+                "其他"
+              ]
+            },
+            {
+              "name": "topic",
+              "label": "想谈的一件事（只选一件）",
+              "type": "text"
+            },
+            {
+              "name": "rights",
+              "label": "1 我的权利：这件事里我有哪些权利（只写给自己看）",
+              "type": "multi_choice",
+              "options": [
+                "表达感受",
+                "对无法满足的请求说“不”",
+                "期望别人尊重我的需要",
+                "拥有私人空间和时间",
+                "对孩子的教养有发言权",
+                "不为别人的情绪负责"
+              ],
+              "allow_other": true
+            },
+            {
+              "name": "timing",
+              "label": "2 约时间：我会怎么开口约",
+              "type": "text",
+              "hint": "“我想和你谈谈，现在方便吗？不方便的话我们约个时间。”"
+            },
+            {
+              "name": "impact",
+              "label": "3 这件事对我的影响（客观描述，不抱怨、不评价）",
+              "type": "textarea",
+              "print_lines": 2
+            },
+            {
+              "name": "feeling",
+              "label": "4 我的感受：“当你……的时候，我感到……”",
+              "type": "textarea",
+              "print_lines": 2
+            },
+            {
+              "name": "request",
+              "label": "5 我的请求：“我希望……”（具体、一次一个）",
+              "type": "textarea",
+              "print_lines": 2
+            },
+            {
+              "name": "positive_result",
+              "label": "6 合作带来的好结果",
+              "type": "textarea",
+              "print_lines": 1
+            },
+            {
+              "name": "opening_appreciation",
+              "label": "对长辈：先说一句真心的肯定（可选）",
+              "type": "text"
+            },
+            {
+              "name": "fallback",
+              "label": "如果对方不接受或生气，我怎么办",
+              "type": "textarea",
+              "hint": "书中提醒：第一次要做好失败的准备，给对方时间适应",
+              "print_lines": 1
+            },
+            {
+              "name": "after_rating",
+              "label": "谈完后：结果和感受",
+              "type": "textarea",
+              "print_lines": 1
+            }
+          ]
+        }
+      ],
+      "reference": {
+        "title": "说“不”的三步加一（伯恩第13章）",
+        "items": [
+          "复述对方的请求",
+          "解释原因",
+          "说“不”",
+          "（可选）提一个折中方案"
+        ]
+      },
+      "example": {
+        "audience": "伴侣",
+        "topic": "育儿分歧时希望得到支持",
+        "rights": [
+          "表达感受",
+          "期望别人尊重我的需要",
+          "对孩子的教养有发言权"
+        ],
+        "timing": "“周六孩子午睡时，我们能单独谈 20 分钟吗？”",
+        "impact": "这两周孩子吃饭和看电视的事，长辈和我做法不一样，每次当着孩子争起来，我都要缓很久，晚上也睡不好。",
+        "feeling": "“那种时候我觉得自己很孤单，也很委屈。”",
+        "request": "“我希望以后遇到这类事，我们俩先私下商量好统一的说法，再一起去和长辈说。”",
+        "positive_result": "“这样我不用一个人硬扛，也就不会憋到晚上冲你发火了。”",
+        "fallback": "先说“我们都想想，明天再接着谈”，不在气头上继续。"
+      }
+    },
+    {
+      "id": "behavior_experiment",
+      "title": "行为实验表",
+      "category": "想法",
+      "when_to_use": "有一条“规则”让你不敢开口或总想回避时用，比如“如果我直说不同意，关系就完了”“我说了也没用”。",
+      "how_to_fill": "写下要检验的规则和相信程度，设计一个小的、安全的行为去试，先写预测，再记实际结果（可以试 2–3 次），最后比一比，重新给相信程度打分。",
+      "sources": [
+        {
+          "book": "《抑郁症自救手册》（莫妮克·汤普森）",
+          "chapter": "第4章",
+          "note": "策略 6 如果／那么陷阱、策略 8 用实验挑战规则（5 步）"
+        },
+        {
+          "book": "《伯恩斯新情绪疗法》（戴维·伯恩斯）",
+          "chapter": "第5、10章",
+          "note": "快乐预测表的思路；无声假定"
+        }
+      ],
+      "sections": [
+        {
+          "id": "setup",
+          "title": "实验设计",
+          "repeatable": false,
+          "fields": [
+            {
+              "name": "rule",
+              "label": "1 要检验的规则（如果……那么……）",
+              "type": "textarea",
+              "print_lines": 2
+            },
+            {
+              "name": "common_traps",
+              "label": "书中常见的“如果／那么”陷阱（可勾选参考）",
+              "type": "multi_choice",
+              "options": [
+                "如果我惹恼了别人，那么他们就会拒绝我",
+                "如果我不同意别人的意见，那么他们就会伤害我",
+                "如果我犯了错，那么我就是一个失败者",
+                "如果我寻求帮助，那么人们就会知道我很软弱",
+                "如果我允许自己感受情绪，那么我会完全失控"
+              ]
+            },
+            {
+              "name": "belief_before",
+              "label": "现在相信几分（0–10）",
+              "type": "number",
+              "min": 0,
+              "max": 10
+            },
+            {
+              "name": "experiment",
+              "label": "2 用什么行为来检验（小一点、安全一点）",
+              "type": "textarea",
+              "print_lines": 2
+            },
+            {
+              "name": "prediction",
+              "label": "3 我预测会发生什么",
+              "type": "textarea",
+              "print_lines": 2
+            }
+          ]
+        },
+        {
+          "id": "trials",
+          "title": "4 实际发生了什么",
+          "repeatable": true,
+          "print_rows": 3,
+          "fields": [
+            {
+              "name": "date",
+              "label": "日期",
+              "type": "date"
+            },
+            {
+              "name": "what_happened",
+              "label": "情境和结果",
+              "type": "textarea",
+              "print_lines": 2
+            }
+          ]
+        },
+        {
+          "id": "conclusion",
+          "title": "5 比一比",
+          "repeatable": false,
+          "fields": [
+            {
+              "name": "comparison",
+              "label": "预测和结果有什么不同",
+              "type": "textarea",
+              "print_lines": 2
+            },
+            {
+              "name": "belief_after",
+              "label": "现在相信几分（0–10）",
+              "type": "number",
+              "min": 0,
+              "max": 10
+            },
+            {
+              "name": "new_rule",
+              "label": "更平衡的新规则",
+              "type": "textarea",
+              "print_lines": 2
+            }
+          ]
+        }
+      ],
+      "example": {
+        "rule": "如果我跟长辈直说不同意，那么关系就会闹僵。",
+        "belief_before": 8,
+        "experiment": "用平和的语气提一个小请求：饭前一小时先不给孩子零食。",
+        "prediction": "长辈会不高兴，几天不理我。",
+        "trials": [
+          {
+            "what_happened": "长辈说“行吧”，有点不情愿，但晚饭时照常聊天。"
+          }
+        ],
+        "comparison": "不太高兴是有的，但没有闹僵。",
+        "belief_after": 4,
+        "new_rule": "好好说一个具体的小请求，大多数时候关系扛得住。"
+      }
+    },
+    {
+      "id": "eight_week_plan",
+      "title": "8 周练习计划",
+      "category": "计划",
+      "when_to_use": "想系统地练正念时用，一周一个主题。被孩子打断很正常，不算失败，下次接着练。",
+      "how_to_fill": "每周开始前看一下这周的主题和练习，每天做完在对应格子里打勾，周末写一句感受。时长是按带孩子的家庭压缩过的，能多做就多做。",
+      "sources": [
+        {
+          "book": "《抑郁症的正念认知疗法》第2版（西格尔、威廉斯、蒂斯代尔）",
+          "chapter": "第7–17章",
+          "note": "八周课程；本表按读书笔记做了家用压缩，时长不是原书要求"
+        }
+      ],
+      "weeks": [
+        {
+          "week": 1,
+          "theme": "觉知自动运行（第7章）",
+          "formal": "身体扫描 20–40 分钟",
+          "informal": "选一件日常事正念地做（如刷牙、给孩子洗澡）",
+          "extra": "正念地吃一顿饭"
+        },
+        {
+          "week": 2,
+          "theme": "活在头脑中（第9章）",
+          "formal": "身体扫描 20–30 分钟 + 正念呼吸 10 分钟",
+          "informal": "换一件日常事务正念地做",
+          "extra": "愉快事件日历：每天记 1 件"
+        },
+        {
+          "week": 3,
+          "theme": "聚焦离散的心（第10章）",
+          "formal": "伸展和呼吸／正念运动，约 20 分钟",
+          "informal": "呼吸空间每天 3 次，固定时间",
+          "extra": "不愉快事件日历：每天记 1 件"
+        },
+        {
+          "week": 4,
+          "theme": "识别厌恶（第11章）",
+          "formal": "静坐冥想 20–30 分钟",
+          "informal": "固定呼吸空间 3 次；不愉快时加做",
+          "extra": "留意“不想要”在身体上的信号"
+        },
+        {
+          "week": 5,
+          "theme": "允许／顺其自然（第13章）",
+          "formal": "困难冥想 20 分钟（先选小困难）与静坐交替",
+          "informal": "呼吸空间扩展版：命名情绪",
+          "extra": "记录一次“允许”之后有什么不同"
+        },
+        {
+          "week": 6,
+          "theme": "想法不是事实（第14章）",
+          "formal": "自选练习 20–40 分钟",
+          "informal": "呼吸空间之后走“想法之门”",
+          "extra": "写早期预警信号清单"
+        },
+        {
+          "week": 7,
+          "theme": "更好地关爱自己（第16章）",
+          "formal": "选一个能长期坚持的练习 15–30 分钟",
+          "informal": "呼吸空间之后接一个小行动（P 或 M）",
+          "extra": "填滋养／消耗清单，写行动计划"
+        },
+        {
+          "week": 8,
+          "theme": "保持和扩展（第17章）",
+          "formal": "确定以后的每日练习，哪怕 10–15 分钟",
+          "informal": "每天至少 1 次呼吸空间",
+          "extra": "写“我的抗抑郁活动清单”和坚持的理由"
+        }
+      ],
+      "sections": [
+        {
+          "id": "week_log",
+          "title": "每周打卡（8 周各一行）",
+          "repeatable": true,
+          "print_rows": 8,
+          "fields": [
+            {
+              "name": "week",
+              "label": "第几周",
+              "type": "number",
+              "min": 1,
+              "max": 8
+            },
+            {
+              "name": "days_formal",
+              "label": "正式练习完成天数",
+              "type": "number",
+              "min": 0,
+              "max": 7
+            },
+            {
+              "name": "days_informal",
+              "label": "非正式练习完成天数",
+              "type": "number",
+              "min": 0,
+              "max": 7
+            },
+            {
+              "name": "extra_done",
+              "label": "每周任务完成了吗",
+              "type": "single_choice",
+              "options": [
+                "完成",
+                "部分",
+                "没有"
+              ]
+            },
+            {
+              "name": "reflection",
+              "label": "一句话感受",
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
