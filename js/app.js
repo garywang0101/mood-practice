@@ -12,6 +12,20 @@ import {
   viewHTML,
 } from "./form.js";
 import {
+  carryItem,
+  dayPageInner,
+  editorInner,
+  homePlanHTML,
+  itemEditorHTML,
+  markItem,
+  readDayEditor,
+  refreshDayHint,
+  saveDayItems,
+  saveReview,
+  suggestionById,
+  deleteDay,
+} from "./days.js";
+import {
   deleteEntry,
   emptyState,
   exportPayload,
@@ -85,6 +99,8 @@ function parseRoute() {
   if (parts[0] === "sos") return { name: "sos" };
   if (parts[0] === "plan") return { name: "plan" };
   if (parts[0] === "about") return { name: "about" };
+  if (parts[0] === "day") return { name: "day", date: parts[1] || "" };
+  if (parts[0] === "tomorrow") return { name: "tomorrow", date: parts[1] || "" };
   if (parts[0] === "w" && parts[1]) {
     if (!parts[2]) return { name: "sheet", id: parts[1], mode: "list" };
     if (parts[2] === "new") return { name: "sheet", id: parts[1], mode: "edit", entryId: null };
@@ -497,6 +513,7 @@ function renderHome() {
     content: `${hint}
       <p class="lede">情绪上来的时候，用得上的几张表。</p>
       <a class="sos-btn" href="#/sos">快要发火了<small>停一下，做三分钟呼吸空间</small></a>
+      ${homePlanHTML()}
       <section class="card">
         <span class="kicker">每日打卡</span>
         <h2>今天</h2>
@@ -708,7 +725,7 @@ function renderAbout() {
     content: `<section class="card">
         <h2>这是什么</h2>
         <p>${esc(pack.description || "")}</p>
-        <p>打开首页的「快要发火了」，可以先停一下，再做一个三分钟呼吸空间。每天打卡看的是一段时间的变化。八周计划按一周一个主题来勾。</p>
+        <p>打开首页的「快要发火了」，可以先停一下，再做一个三分钟呼吸空间。每天打卡看的是一段时间的变化。八周计划按一周一个主题来勾。晚上可以写「明日计划」，第二天在首页把那几件小事勾掉。</p>
       </section>
       <section class="card">
         <h2>记录在哪里</h2>
@@ -872,6 +889,28 @@ function renderSheetEdit(worksheet, entryId) {
   });
 }
 
+function renderDay(route) {
+  const date = /^\d{4}-\d{2}-\d{2}$/.test(route.date) ? route.date : todayIso();
+  const title = date === todayIso() ? "今日计划" : "这一天的计划";
+  return shell({
+    tab: "home",
+    title,
+    back: "#/",
+    content: dayPageInner(date),
+  });
+}
+
+function renderTomorrow(route) {
+  const date = /^\d{4}-\d{2}-\d{2}$/.test(route.date) ? route.date : addDays(todayIso(), 1);
+  const title = date === addDays(todayIso(), 1) ? "明日计划" : "写这天的计划";
+  return shell({
+    tab: "home",
+    title,
+    back: "#/",
+    content: editorInner(date),
+  });
+}
+
 function render(options = {}) {
   const route = parseRoute();
   document.documentElement.dataset.page = route.name;
@@ -881,6 +920,8 @@ function render(options = {}) {
   else if (route.name === "sos") html = renderSos();
   else if (route.name === "plan") html = renderPlan();
   else if (route.name === "about") html = renderAbout();
+  else if (route.name === "day") html = renderDay(route);
+  else if (route.name === "tomorrow") html = renderTomorrow(route);
   else html = renderSheet(route);
   app.innerHTML = html;
   if (route.name === "sos") tick();
@@ -891,6 +932,27 @@ function rerender() {
   const y = window.scrollY;
   render({ scroll: false });
   window.scrollTo(0, y);
+}
+
+async function switchDayDate(input) {
+  const form = document.getElementById("day-editor");
+  const next = input.value;
+  const current = form?.dataset.date || "";
+  if (!next || next === current) return;
+  const dirty = [...(form?.querySelectorAll("[data-day-title]") || [])].some((field) => field.value.trim());
+  if (dirty) {
+    const ok = await confirmDialog({
+      title: "换一天",
+      body: "这一天还没保存。换日期会离开现在写的内容。",
+      confirmText: "去另一天",
+      danger: false,
+    });
+    if (!ok) {
+      input.value = current;
+      return;
+    }
+  }
+  location.hash = `#/tomorrow/${next}`;
 }
 
 function refreshProgress() {
@@ -1335,6 +1397,89 @@ async function onClick(event) {
     });
     const radio = [...document.querySelectorAll("#sos-log input[type='radio']")].find((input) => input.value === name);
     if (radio) radio.checked = true;
+    return;
+  }
+  if (action === "day-mark") {
+    markItem(button.dataset.date, button.dataset.item, button.dataset.mark);
+    rerender();
+    return;
+  }
+  if (action === "add-day-item") {
+    document.getElementById("day-items")?.insertAdjacentHTML("beforeend", itemEditorHTML());
+    refreshDayHint();
+    return;
+  }
+  if (action === "remove-day-item") {
+    button.closest(".day-edit")?.remove();
+    refreshDayHint();
+    return;
+  }
+  if (action === "day-suggest") {
+    const suggestion = suggestionById(button.dataset.suggest);
+    const host = document.getElementById("day-items");
+    if (!suggestion || !host) return;
+    const titles = [...host.querySelectorAll("[data-day-title]")].map((input) => input.value.trim());
+    if (titles.includes(suggestion.title)) {
+      toast("这件已经在列表里");
+      return;
+    }
+    const empty = [...host.querySelectorAll(".day-edit")].find((row) => !row.querySelector("[data-day-title]").value.trim());
+    const html = itemEditorHTML({
+      id: empty?.dataset.itemId,
+      title: suggestion.title,
+      time: suggestion.time,
+      minimum: suggestion.minimum,
+    });
+    if (empty) empty.outerHTML = html;
+    else host.insertAdjacentHTML("beforeend", html);
+    refreshDayHint();
+    if (document.querySelectorAll("#day-editor .day-edit").length > 3) {
+      toast("三件就够了，多的一件也可以留下");
+    }
+    return;
+  }
+  if (action === "save-day") {
+    const form = document.getElementById("day-editor");
+    if (!form) return;
+    const items = readDayEditor(form).filter((item) => item.title.trim());
+    if (!items.length) {
+      toast("先写一件很小的事");
+      return;
+    }
+    try {
+      saveDayItems(form.dataset.date, items);
+    } catch {
+      toast("无法保存。请检查浏览器是否禁止了本地存储。");
+      return;
+    }
+    toast(items.length > 3 ? "已保存。多出来的不做也没关系" : "已保存在这台设备上");
+    const date = form.dataset.date;
+    location.hash = date === todayIso() ? "#/day" : `#/day/${date}`;
+    return;
+  }
+  if (action === "carry-day") {
+    const result = carryItem(button.dataset.date, button.dataset.item);
+    if (result.status === "added") toast("已经放到明天");
+    else if (result.status === "already") toast("明天已经有这件了");
+    rerender();
+    return;
+  }
+  if (action === "delete-day") {
+    const ok = await confirmDialog({
+      title: "删除这天的计划",
+      body: "只删除这一天的小事。打卡和别的练习记录还在。",
+      confirmText: "删除",
+      danger: true,
+    });
+    if (!ok) return;
+    try {
+      deleteDay(button.dataset.date);
+    } catch {
+      toast("无法删除。请检查浏览器是否禁止了本地存储。");
+      return;
+    }
+    toast("已删除");
+    location.hash = "#/day";
   }
 }
 
@@ -1348,6 +1493,9 @@ function onInput(event) {
     state.plan.notes[target.dataset.weekNote] = target.value;
     save(state);
   }
+  if (target.id === "day-review") {
+    saveReview(target.dataset.date, target.value);
+  }
   if (target.matches("[data-other-text]") && target.value.trim()) {
     const toggle = target.closest(".field")?.querySelector("[data-other-toggle]");
     if (toggle) toggle.checked = true;
@@ -1356,6 +1504,10 @@ function onInput(event) {
 
 function onChange(event) {
   const target = event.target;
+  if (target.id === "day-for") {
+    switchDayDate(target);
+    return;
+  }
   if (target.id === "chime") {
     const settings = loadSettings();
     settings.chime = target.checked;
